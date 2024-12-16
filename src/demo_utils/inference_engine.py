@@ -17,12 +17,11 @@ import time
 
 import backoff
 import openai
-from openai.error import (
+from openai import (
     APIConnectionError,
     APIError,
     RateLimitError,
-    ServiceUnavailableError,
-    InvalidRequestError
+    BadRequestError
 )
 
 import base64
@@ -85,7 +84,7 @@ class OpenaiEngine(Engine):
 
     @backoff.on_exception(
         backoff.expo,
-        (APIError, RateLimitError, APIConnectionError, ServiceUnavailableError, InvalidRequestError),
+        (APIError, RateLimitError, APIConnectionError, BadRequestError),
     )
     def generate(self, prompt: list = None, max_new_tokens=4096, temperature=None, model=None, image_path=None,
                  ouput__0=None, turn_number=0, **kwargs):
@@ -182,7 +181,7 @@ class OpenaiEngine_MindAct(Engine):
 
     @backoff.on_exception(
         backoff.expo,
-        (APIError, RateLimitError, APIConnectionError, ServiceUnavailableError),
+        (APIError, RateLimitError, APIConnectionError, BadRequestError),
     )
     def generate(self, prompt, max_new_tokens=50, temperature=0, model=None, **kwargs):
         self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)

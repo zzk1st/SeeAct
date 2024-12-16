@@ -7,7 +7,10 @@ from seeact.agent import SeeActAgent
 # os.environ["GEMINI_API_KEY"] = "Your API KEY Here"
 
 async def run_agent():
-    agent = SeeActAgent(model="gpt-4o")
+    agent = SeeActAgent(
+        model="gpt-4o",
+        default_task="Give me the url of the latest uploaded video of pewdiepie on youtube",
+        )
     await agent.start()
     while not agent.complete_flag:
         prediction_dict = await agent.predict()
